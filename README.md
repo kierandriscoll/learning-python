@@ -3,7 +3,7 @@
 ## Packages
 Built-in functions are at: https://docs.python.org/3/library/index.html
 If you import a package you MUST use the package name as a prefix to its functions (equivalent to optional use of namespace in R).
-You can import individual functions from a package eg. `rom numpy import arange` but for clarity not recommended.
+You can import individual functions from a package eg. `from numpy import arange` but for clarity not recommended.
 
 ```python
 import numpy
@@ -15,6 +15,17 @@ print(x)
 
 To view all the functions available in a package press Tab after the `numpy.`  
 To see https://numpy.org/doc/stable/genindex.html
+matplotlib
+seaborn
+bokeh
+numpy
+scipy
+pandas
+tkinter
+nltk
+gensim
+sklearn
+
 
 ## Functions and methods
 Some Python objects (like in Javascript) can have methods eg. `object.method()`. Methods can be chained together eg. `object.method1().method2()`
@@ -95,6 +106,16 @@ array2 = list(map(myfunction, array))
 print(array2)
 ```
 
+## Calling other scripts
+If you have modular scripts (eg. myscript.py) and want to run them in regular Python: 
+```python
+import myscript
+```
+If you are using a Jupyter notebook then use:
+```python
+%run myscript
+```
+
 ## PANDAS
 The PANDAS package allows you to create dataframes - A dataframe is a collection of lists.  
 Panda dataframes have their own methods eg. `.head()`
@@ -134,4 +155,12 @@ titanic = titanic.assign(
 )
 
 titanic.head()
+```
+
+### Saving a dataframe
+A dataframe has various **methods** that will save it in different formats including:
+```python
+titanic.to_csv('savetitanic.csv')
+titanic.to_excel('savetitanic.xlsx')
+titanic.to_feather('savetitanic.ft')
 ```
