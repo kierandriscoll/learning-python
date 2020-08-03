@@ -210,6 +210,29 @@ titanic.embarked.str.replace("[.,:;'()?!]", "")
 titanic.embarked.str.replace("red|blue", "green") 
 ```
 
+### Summary stats
+Dataframe columns have a `.value_counts()` method that producing a freuency count:  
+```python
+titanic.embarked.value_counts()
+```
+
+### apply functions to a column
+Pandas adds an **apply** function that can be applied to each item in a column   
+```python
+titanic.embarked.apply(lambda x: x.lower())  # In this case it would be simpler to use titanic.embarked.str.lower()
+```
+**apply** is most useful if you want to apply a user-defined function:
+```python
+def myfunction(x):
+    # x = process1
+    # x = process2
+    # x = process3
+    return x
+
+titanic.embarked.apply(lambda x: myfunction(x))
+```
+
+
 ### Saving a dataframe
 A dataframe has various **methods** that will save it in different formats including:
 ```python
