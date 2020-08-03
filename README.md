@@ -182,7 +182,7 @@ titanic.head()
 ### Changing values with conditions
 ```python
 titanic.loc[titanic.id == 5, 'existing_var'] = "value if 5"
-``
+```
 
 ### String methods
 String columns have string functions/methods under the **.str** namespace. 
