@@ -116,6 +116,7 @@ If you are using a Jupyter notebook then use:
 %run myscript
 ```
 
+
 ## PANDAS
 The PANDAS package allows you to create dataframes - A dataframe is a collection of lists.  
 Panda dataframes have their own methods eg. `.head()`
@@ -128,33 +129,85 @@ titanic = pd.read_csv('../Data/titanic.csv')
 titanic.head()
 ```
 
+### Accessing columns
+You can use bracket notation to reference columns (this is clearer to read but longer to type):
+```python
+titanic["pclass"]
+```
+Columns are also attributes of the dataframe so you can also use dot notation (although this may be confusing if chaining with other methods):
+```python
+titanic.pclass
+```
+
+### Renaming
+```python
+titanic.rename(columns = {
+  "parch" : "Parents_Children"
+})
+```
+### Drop columns
+```python
+titanic = titanic.drop(columns=["cabin","boat"])
+```
+
 ### Filtering
 ```python
 # Filtering a dataframe using base python syntax
-titanic[(titanic['pclass'] == 1) & (titanic['sex']== 'female')]
+titanic[(titanic.pclass == 1) & (titanic.sex == 'female')]
 
 # Alternatively this can be simplified using the .query method
 titanic.query('pclass == 1 & sex == "female"')
 
-#Nb. there is a dataframe method called .filter() but this is for selecting column
+#Nb. there is a dataframe method called .filter() but this is for selecting columns
 ```
 
 ### Creating new variables
 ```python
-# Creating new variables using base python syntax
-cond = titanic['sex'] == 'female'
+# Creating new variables using base python syntax - Always use [] for the new variable name:
+cond = titanic.sex == 'female'
 titanic['female'] = cond.astype(int)
-titanic['family_size'] = titanic['sibsp'] + titanic['parch'] + 1
-titanic['embarked_city'] = titanic['embarked'].map({'S':'Southampton','C':'Cherbourg','Q':'Queenstown'})
+titanic['family_size'] = titanic.sibsp + titanic.parch + 1
+titanic['embarked_city'] = titanic.embarked.map({'S':'Southampton','C':'Cherbourg','Q':'Queenstown'})
 
 # Alternatively use .assign() for similar syntax to mutate
 titanic = titanic.assign(
-    female2 = titanic['sex'] == 'female',
-    family_size2 = titanic['sibsp'] + titanic['parch'] + 1,
-    embarked_city2 = titanic['embarked'].map({'S':'Southampton','C':'Cherbourg','Q':'Queenstown'})
+    female2 = titanic.sex == 'female',
+    family_size2 = titanic.sibsp + titanic.parch + 1,
+    embarked_city2 = titanic.embarked.map({'S':'Southampton','C':'Cherbourg','Q':'Queenstown'})
 )
 
 titanic.head()
+```
+
+### Changing values with conditions
+```python
+titanic.loc[titanic.id == 5, 'existing_var'] = "value if 5"
+``
+
+### String methods
+String columns have string functions/methods under the **.str** namespace. 
+```python
+titanic.pclass.str.lower()
+titanic.pclass.str.strip()
+titanic.pclass.str.split()
+```
+
+**.str** can be used to extract substrings (Nb. Python indexing starts with 0):
+```python
+# Extract the first 4 characters
+titanic.embarked.str[0:4] 
+
+# Extract the first 4th, 5th and 6th characters
+titanic.embarked.str[3:6] 
+```
+
+**.str.replace** will replace one string with another. 
+```python
+titanic.embarked.str.replace('-', '')
+
+# You can include regex in the argument to match multiple characters/strings:
+titanic.embarked.str.replace("[.,:;'()?!]", "") 
+titanic.embarked.str.replace("red|blue", "green") 
 ```
 
 ### Saving a dataframe
@@ -163,4 +216,5 @@ A dataframe has various **methods** that will save it in different formats inclu
 titanic.to_csv('savetitanic.csv')
 titanic.to_excel('savetitanic.xlsx')
 titanic.to_feather('savetitanic.ft')
+titanic.to_json("titanic.json", orient='records')
 ```
